@@ -1,0 +1,4 @@
+-r lambda_src/requirements-lambda.txt
+requests>=2.32.0,<3.0.0
+streamlit>=1.58.0,<2.0.0
+

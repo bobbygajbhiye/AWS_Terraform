@@ -1,0 +1,91 @@
+{
+    "Version":  "2012-10-17",
+    "Statement":  [
+                      {
+                          "Sid":  "LambdaAndLogs",
+                          "Effect":  "Allow",
+                          "Action":  [
+                                         "lambda:AddPermission",
+                                         "lambda:CreateFunction",
+                                         "lambda:DeleteFunction",
+                                         "lambda:GetFunction",
+                                         "lambda:GetFunctionCodeSigningConfig",
+                                         "lambda:GetPolicy",
+                                         "lambda:ListVersionsByFunction",
+                                         "lambda:RemovePermission",
+                                         "lambda:TagResource",
+                                         "lambda:UpdateFunctionCode",
+                                         "lambda:UpdateFunctionConfiguration",
+                                         "logs:CreateLogGroup",
+                                         "logs:DeleteLogGroup",
+                                         "logs:DescribeLogGroups",
+                                         "logs:ListTagsForResource",
+                                         "logs:PutRetentionPolicy",
+                                         "logs:TagResource"
+                                     ],
+                          "Resource":  "*"
+                      },
+                      {
+                          "Sid":  "ApiGatewayHttpApi",
+                          "Effect":  "Allow",
+                          "Action":  [
+                                         "apigateway:DELETE",
+                                         "apigateway:GET",
+                                         "apigateway:PATCH",
+                                         "apigateway:POST",
+                                         "apigateway:PUT"
+                                     ],
+                          "Resource":  "*"
+                      },
+                      {
+                          "Sid":  "IamForLambda",
+                          "Effect":  "Allow",
+                          "Action":  [
+                                         "iam:AttachRolePolicy",
+                                         "iam:CreateRole",
+                                         "iam:DeleteRole",
+                                         "iam:DetachRolePolicy",
+                                         "iam:GetPolicy",
+                                         "iam:GetPolicyVersion",
+                                         "iam:GetRole",
+                                         "iam:ListAttachedRolePolicies",
+                                         "iam:ListInstanceProfilesForRole",
+                                         "iam:ListRolePolicies",
+                                         "iam:PassRole",
+                                         "iam:TagRole"
+                                     ],
+                          "Resource":  [
+                                           "arn:aws:iam::*:role/langgraph-calculator-agent-*",
+                                           "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                                       ]
+                      },
+                      {
+                          "Sid":  "TerraformStateBucket",
+                          "Effect":  "Allow",
+                          "Action":  [
+                                         "s3:ListBucket"
+                                     ],
+                          "Resource":  "arn:aws:s3:::YOUR_TF_STATE_BUCKET",
+                          "Condition":  {
+                                            "StringLike":  {
+                                                               "s3:prefix":  [
+                                                                                 "langgraph-calculator-agent/*"
+                                                                             ]
+                                                           }
+                                        }
+                      },
+                      {
+                          "Sid":  "TerraformStateObjects",
+                          "Effect":  "Allow",
+                          "Action":  [
+                                         "s3:GetObject",
+                                         "s3:PutObject",
+                                         "s3:DeleteObject"
+                                     ],
+                          "Resource":  [
+                                           "arn:aws:s3:::YOUR_TF_STATE_BUCKET/langgraph-calculator-agent/terraform.tfstate",
+                                           "arn:aws:s3:::YOUR_TF_STATE_BUCKET/langgraph-calculator-agent/terraform.tfstate.tflock"
+                                       ]
+                      }
+                  ]
+}
